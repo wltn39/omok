@@ -37,6 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite: ^2.3.0
   path: ^1.8.3
+  just_audio: ^0.9.34 # mp3  
+  fading_image_button: ^0.10.0+0 # 이미지버튼  
+  url_launcher: ^6.1.12 # 웹페이지 열기에 사용
+  intl: ^0.18.1 # 달력
 
 dev_dependencies:
   flutter_test:
