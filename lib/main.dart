@@ -79,6 +79,10 @@ class _DatabaseAppState extends State<DatabaseApp> {
   // 모든 Flag 설정
   bool? v_flagButtonPlay = true;
 
+  // 변수설정
+  String v_image_volume = 'asset/images/volume_on.png';
+  bool v_volume = true;
+
   @override
   Widget build(BuildContext context) {
     // return Text('오목 메인 화면');
@@ -94,34 +98,146 @@ class _DatabaseAppState extends State<DatabaseApp> {
       backgroundColor: Colors.transparent,
       //스캐폴드에 백그라운드를 투명하게 한다.
       appBar: AppBar(
-          title: const Text(
-            'AI 오목',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+        title: const Text(
+          'AI 오목',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        actions: [
+          ElevatedButton(
+            child: Image.asset(
+              'asset/images/lock.png',
+              height: 30,
+              width: 25,
+            ),
+            onPressed: () async {
+              if (v_flagButtonPlay == false) {
+                EasyLoading.instance.fontSize = 16;
+                EasyLoading.instance.displayDuration =
+                    const Duration(milliseconds: 500);
+                EasyLoading.showToast('*** Not executed! ***');
+              } else {
+                const url = 'https://velog.io/@wltn39';
+                await launchUrl(
+                  Uri.parse(url),
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
           ),
-          actions: [
-            ElevatedButton(
-              child: Image.asset(
-                'asset/images/lock.png',
-                height: 30,
-                width: 25,
-              ),
-              onPressed: () async {
-                if (v_flagButtonPlay == false) {
+          ElevatedButton(
+            child: Image.asset(
+              'asset/images/playStore.png',
+              height: 22,
+              width: 25,
+            ),
+            onPressed: () async {
+              if (v_flagButtonPlay == false) {
+                EasyLoading.instance.fontSize = 16;
+                EasyLoading.instance.displayDuration =
+                    const Duration(milliseconds: 500);
+                EasyLoading.showToast('*** Not executed! ***');
+              } else {
+                const url =
+                    'https://play.google.com/store/apps/details?id=com.gpldy.omok';
+                await launchUrl(
+                  Uri.parse(url),
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
+          ),
+          ElevatedButton(
+            child: Image.asset(
+              v_image_volume,
+              height: 22,
+              width: 25,
+            ),
+            onPressed: () {
+              if (v_volume == true) {
+                v_image_volume = 'asset/images/volume_off.png';
+                v_volume = false;
+              } else {
+                v_image_volume = 'asset/images/volume_on.png';
+                v_volume = true;
+              }
+              ;
+              setState(() {});
+            },
+          ),
+          ElevatedButton(
+              onPressed: () {
+                if (v_flagButtonPlay == true) {
+                  Navigator.of(context).pushNamed('/omokList');
+                } else {
                   EasyLoading.instance.fontSize = 16;
                   EasyLoading.instance.displayDuration =
                       const Duration(milliseconds: 500);
                   EasyLoading.showToast('*** Not executed! ***');
-                } else {
-                  const url = 'https://velog.io/@wltn39';
-                  await launchUrl(
-                    Uri.parse(url),
-                    mode: LaunchMode.externalApplication,
-                  );
                 }
               },
-            )
-          ]),
-      body: Container(),
+              child: const Text(
+                'Rank',
+                style: TextStyle(color: Colors.white, fontSize: 13),
+              )),
+        ],
+      ),
+      body: Container(
+          child: Column(
+        children: [
+          // body 상단
+          // 바둑판 배경이미지
+          Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Container(
+                width: (MediaQuery.of(context).size.width >
+                        MediaQuery.of(context).size.height - 300
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+                height: (MediaQuery.of(context).size.width >
+                        MediaQuery.of(context).size.height - 300
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+                // color: Colors.yellow,
+                child: Image.asset('asset/images/omok_bg.jpg',
+                    fit: BoxFit.contain),
+              ),
+              //15*15 바둑돌 이미지
+              Container(
+                width: (MediaQuery.of(context).size.width >
+                        MediaQuery.of(context).size.height - 300 //하단 최소 height
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+                height: (MediaQuery.of(context).size.height >
+                        MediaQuery.of(context).size.height - 300
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+              ),
+              //15*15 버튼
+              Container(
+                width: (MediaQuery.of(context).size.width >
+                        MediaQuery.of(context).size.height - 300 //하단 최소 height
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+                height: (MediaQuery.of(context).size.height >
+                        MediaQuery.of(context).size.height - 300
+                    ? MediaQuery.of(context).size.height - 300
+                    : MediaQuery.of(context).size.width),
+              ),
+              // body 하단
+              // Expanded(
+              //   flex: 1,
+              //   child: Container(
+              //     color: Colors.blue,
+              //   ),
+              // ),
+            ],
+          ),
+        ],
+      )),
+      bottomNavigationBar: Container(
+        height: 63,
+      ),
     );
   }
 
