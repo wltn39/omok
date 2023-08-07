@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
 
   Future<Database> initDatabase() async {
     return openDatabase(
-      join(await getDatabasePath(), 'omok_database.db'),
+      join(await getDatabasesPath(), 'omok_database.db'),
       onCreate: (db, version) {
         return db.execute(
           "CREATE TABLE omoks(omokDate TEXT PRIMARY KEY, "
