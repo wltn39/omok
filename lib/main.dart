@@ -83,6 +83,12 @@ class _DatabaseAppState extends State<DatabaseApp> {
   String v_image_volume = 'asset/images/volume_on.png';
   bool v_volume = true;
 
+  // 모든 배열 설정
+  final v_lisBox = List.generate(15, (i) => List.generate(15, (j) => ''));
+  // 바둑판 배열 (15*15) ==> 수순
+  final v_listBox_count =
+      List.generate(15, (i) => List.generate(15, (j) => ''));
+
   @override
   Widget build(BuildContext context) {
     // return Text('오목 메인 화면');
@@ -165,76 +171,148 @@ class _DatabaseAppState extends State<DatabaseApp> {
             },
           ),
           ElevatedButton(
-              onPressed: () {
-                if (v_flagButtonPlay == true) {
-                  Navigator.of(context).pushNamed('/omokList');
-                } else {
-                  EasyLoading.instance.fontSize = 16;
-                  EasyLoading.instance.displayDuration =
-                      const Duration(milliseconds: 500);
-                  EasyLoading.showToast('*** Not executed! ***');
-                }
-              },
-              child: const Text(
-                'Rank',
-                style: TextStyle(color: Colors.white, fontSize: 13),
-              )),
+            onPressed: () {
+              if (v_flagButtonPlay == true) {
+                Navigator.of(context).pushNamed('/omokList');
+              } else {
+                EasyLoading.instance.fontSize = 16;
+                EasyLoading.instance.displayDuration =
+                    const Duration(milliseconds: 500);
+                EasyLoading.showToast('*** Not executed! ***');
+              }
+            },
+            child: const Text(
+              'Rank',
+              style: TextStyle(color: Colors.white, fontSize: 13),
+            ),
+          ),
         ],
       ),
       body: Container(
-          child: Column(
-        children: [
-          // body 상단
-          // 바둑판 배경이미지
-          Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Container(
-                width: (MediaQuery.of(context).size.width >
-                        MediaQuery.of(context).size.height - 300
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-                height: (MediaQuery.of(context).size.width >
-                        MediaQuery.of(context).size.height - 300
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-                // color: Colors.yellow,
-                child: Image.asset('asset/images/omok_bg.jpg',
-                    fit: BoxFit.contain),
+        child: Column(
+          children: [
+            // body 상단
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                // 바둑판 배경이미지
+                Container(
+                  width: (MediaQuery.of(context).size.width >
+                          MediaQuery.of(context).size.height - 300
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                  height: (MediaQuery.of(context).size.width >
+                          MediaQuery.of(context).size.height - 300
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                  // color: Colors.yellow,
+                  child: Image.asset('asset/images/omok_bg.png',
+                      fit: BoxFit.contain),
+                ),
+                //15*15 바둑돌 이미지
+                Container(
+                  width: (MediaQuery.of(context).size.width >
+                          MediaQuery.of(context).size.height - 300
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                  height: (MediaQuery.of(context).size.height >
+                          MediaQuery.of(context).size.height - 300
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                ),
+                //15*15 버튼
+                Container(
+                  width: (MediaQuery.of(context).size.width >
+                          MediaQuery.of(context).size.height -
+                              300 //하단 최소 height
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                  height: (MediaQuery.of(context).size.height >
+                          MediaQuery.of(context).size.height - 300
+                      ? MediaQuery.of(context).size.height - 300
+                      : MediaQuery.of(context).size.width),
+                ),
+              ],
+            ),
+            // body 하단
+            Expanded(
+              flex: 1,
+              child: Container(
+                // color: Colors.blue,
+                child: Column(
+                  children: [
+                    // body 하단 버튼2, 텍스트2
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.black12,
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Row(
+                          children: [
+                            //body 하단 텍스트 (You)
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: Colors.red,
+                              ),
+                            ),
+                            // body 하단 버튼 게임시작
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: Colors.pink,
+                              ),
+                            ),
+                            // body 하단 버튼 기권
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: Colors.yellow,
+                              ),
+                            ),
+                            // body 하단 텍스트 (현재수순)
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // body 하단 전적
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.blue,
+                        child: Row(
+                          children: [
+                            //body 하단 전적 텍스트
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                color: Colors.deepOrangeAccent,
+                              ),
+                            ),
+                            // body 하단 전적(승무패 점수)
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: Colors.purple[300],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              //15*15 바둑돌 이미지
-              Container(
-                width: (MediaQuery.of(context).size.width >
-                        MediaQuery.of(context).size.height - 300 //하단 최소 height
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-                height: (MediaQuery.of(context).size.height >
-                        MediaQuery.of(context).size.height - 300
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-              ),
-              //15*15 버튼
-              Container(
-                width: (MediaQuery.of(context).size.width >
-                        MediaQuery.of(context).size.height - 300 //하단 최소 height
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-                height: (MediaQuery.of(context).size.height >
-                        MediaQuery.of(context).size.height - 300
-                    ? MediaQuery.of(context).size.height - 300
-                    : MediaQuery.of(context).size.width),
-              ),
-              // body 하단
-              // Expanded(
-              //   flex: 1,
-              //   child: Container(
-              //     color: Colors.blue,
-              //   ),
-              // ),
-            ],
-          ),
-        ],
-      )),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: Container(
         height: 63,
       ),
