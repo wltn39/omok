@@ -90,6 +90,9 @@ class _DatabaseAppState extends State<DatabaseApp> {
   final v_listBox_count =
       List.generate(15, (i) => List.generate(15, (j) => ''));
 
+  // 게임판을 누르면 바둑판에 돌을 놓기
+  void step_downStone(x, y) {}
+
   @override
   Widget build(BuildContext context) {
     // return Text('오목 메인 화면');
